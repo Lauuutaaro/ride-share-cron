@@ -1,0 +1,16 @@
+# This is a basic workflow to help you get started with Actions
+name: Init CDA every 10 minutes
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'  # Cada 10 minutos
+  workflow_dispatch:  # Permite ejecutarlo manualmente también
+
+jobs:
+  ping-worker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call init CDA endpoint
+        run: |
+          curl https://backgroundrideshareworker.fly.dev/init
