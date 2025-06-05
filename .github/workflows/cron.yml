@@ -3,7 +3,7 @@ name: Init CDA every 10 minutes
 
 on:
   schedule:
-    - cron: '*/10 * * * *'  # Cada 10 minutos
+    - cron: '*/5 * * * *'  # Cada 10 minutos
   workflow_dispatch:  # Permite ejecutarlo manualmente también
 
 jobs:
@@ -13,4 +13,11 @@ jobs:
     steps:
       - name: Call init CDA endpoint
         run: |
-          curl https://backgroundrideshareworker.fly.dev/init
+          curl https://ride-share-auth-service.onrender.com/api/auth/ping
+          curl https://ride-share-gateway.onrender.com
+          curl https://ride-share-notifications-service.onrender.com/notifications/ping
+          curl https://ride-share-verification-service.onrender.com/api/verifications/ping
+          curl https://viajescompartidosbackend.onrender.com/api/trips/ping
+
+
+
