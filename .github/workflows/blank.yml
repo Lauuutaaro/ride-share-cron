@@ -1,9 +1,8 @@
-# This is a basic workflow to help you get started with Actions
 name: Init CDA every 10 minutes
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # Cada 10 minutos
+    - cron: '*/5 * * * *'  # Cada 5 minutos
   workflow_dispatch:  # Permite ejecutarlo manualmente también
 
 jobs:
@@ -11,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Call init CDA endpoint
+      - name: Ping all CDA microservices (non-blocking, ignore errors)
         run: |
-          curl https://ride-share-auth-service.onrender.com/api/auth/ping
-          curl https://ride-share-gateway.onrender.com
-          curl https://ride-share-notifications-service.onrender.com/notifications/ping
-          curl https://ride-share-verification-service.onrender.com/api/verifications/ping
-          curl https://viajescompartidosbackend.onrender.com/api/trips/ping
+          curl --max-time 3 --silent --output /dev/null https://ride-share-auth-service.onrender.com/api/auth/ping &
+          curl --max-time 3 --silent --output /dev/null https://ride-share-gateway.onrender.com &
+          curl --max-time 3 --silent --output /dev/null https://ride-share-notifications-service.onrender.com/notifications/ping &
+          curl --max-time 3 --silent --output /dev/null https://ride-share-verification-service.onrender.com/api/verifications/ping &
+          curl --max-time 3 --silent --output /dev/null https://viajescompartidosbackend.onrender.com/api/trips/ping &
